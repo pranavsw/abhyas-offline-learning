@@ -2,9 +2,9 @@
 
 <div align="center">
 
-**A modern, AI-powered offline-first learning application built with React, TypeScript, and Vite**
+**A modern, AI-powered offline-first Flutter mobile application for students in grades 6-12**
 
-[Quick Start](#quick-start) • [Architecture](#architecture) • [API Integration](#api-integration) • [Development](#development)
+[Quick Start](#quick-start) • [Features](#features) • [Architecture](#architecture) • [Development](#development)
 
 </div>
 
@@ -12,115 +12,90 @@
 
 ## Overview
 
-Abhyas is a progressive web application designed for offline learning. It provides:
+Abhyas is a mobile application built with Flutter/Dart designed for offline learning. It provides:
 
-- **Subject & Lesson Management**: Browse structured subjects with lessons organized hierarchically
+- **Subject & Lesson Management**: Browse 4 core subjects (Science, Math, History, English) with comprehensive lesson content
 - **Interactive Reading Experience**: Built-in lesson reader with content type support (text, video, image)
 - **AI-Powered Summarization**: Optional Google Gemini API integration for intelligent text summarization
-- **Quiz System**: Quick quizzes with instant feedback to reinforce learning
+- **Quiz System**: 10-question quizzes with instant feedback to reinforce learning
 - **Progress Tracking**: Dashboard to monitor learning progress and quiz attempts
-- **AI Study Assistant**: AI Friend feature for personalized learning support
+- **AI Study Assistant**: Chat interface for personalized learning support
 - **Offline-First Design**: Core functionality works offline; AI features gracefully degrade
-- **Theme Support**: Dark and light mode for comfortable learning at any time
+- **Dark Theme**: Comfortable learning experience with modern UI design
+
+---
+
+## Features
+
+### 📚 Core Functionality
+- **4 Subject Categories**: Science (🧪), Mathematics (📐), History (📚), English (📖)
+- **20+ Comprehensive Lessons**: 5 lessons per subject with detailed content
+- **100+ Quiz Questions**: 10 questions per lesson for knowledge reinforcement
+- **Hierarchical Navigation**: Subject → Lesson List → Lesson → Quiz flow
+- **Progress Tracking**: View all quiz attempts with color-coded scores
+
+### 🎨 UI/UX
+- **Dark Theme**: Eye-friendly interface with cyan/blue accents
+- **Gradient Cards**: Subject cards with vibrant, subject-specific gradients
+- **Smooth Animations**: Scale effects, transitions, and loading indicators
+- **Bottom Navigation**: 4 persistent tabs (Home, Progress, AI Friend, Settings)
+- **Responsive Design**: Optimized for various screen sizes
+
+### 🤖 AI Integration
+- **Lesson Summarization**: Generate concise 5-10 sentence summaries
+- **AI Study Assistant**: Interactive chat for learning support
+- **Gemini API**: Uses `gemini-2.0-flash-exp` model
+- **Graceful Degradation**: Works offline when API unavailable
 
 ---
 
 ## Tech Stack
 
-| Layer               | Technology                            |
-| ------------------- | ------------------------------------- |
-| **UI Framework**    | React 19.2.0                          |
-| **Language**        | TypeScript 5.8.2                      |
-| **Build Tool**      | Vite 6.2.0                            |
-| **AI/ML**           | Google GenAI (`@google/genai` 1.28.0) |
-| **Node Version**    | 14+                                   |
-| **Package Manager** | npm                                   |
+| Layer               | Technology                |
+| ------------------- | ------------------------- |
+| **Framework**       | Flutter 3.x              |
+| **Language**        | Dart 3.x                 |
+| **State Management**| Provider                 |
+| **AI/ML**           | Google Gemini API        |
+| **HTTP Client**     | http package             |
+| **Date Formatting** | intl package             |
 
 ---
 
 ## Project Structure
 
 ```
-abhyas/
-├── App.tsx                    # Main app component & routing logic
-├── index.tsx                  # React DOM entry point
-├── index.html                 # HTML template
-├── types.ts                   # TypeScript type definitions
-├── metadata.json              # App metadata & configuration
-├── package.json               # Dependencies & npm scripts
-├── tsconfig.json              # TypeScript compiler configuration
-├── vite.config.ts             # Vite build configuration
-│
-├── components/                # Reusable UI components
-│   ├── BottomNav.tsx          # Navigation bar component
-│   ├── Header.tsx             # Header component
-│   ├── LessonListItem.tsx      # Lesson list item component
-│   ├── SubjectCard.tsx         # Subject card component
-│   └── icons/                 # Icon components (SVG/React)
-│       ├── HomeIcon.tsx
-│       ├── ProgressIcon.tsx
-│       ├── AiFriendIcon.tsx
-│       └── SettingsIcon.tsx
-│
-├── views/                     # Page/screen components
-│   ├── HomeView.tsx           # Home dashboard
-│   ├── LessonListView.tsx      # Subject's lesson list
-│   ├── LessonView.tsx          # Lesson reader with AI summarization
-│   ├── QuizView.tsx            # Quiz taking interface
-│   ├── ProgressView.tsx        # Progress/analytics dashboard
-│   ├── AiFriendView.tsx        # AI assistant interface
-│   └── SettingsView.tsx        # App settings & preferences
-│
-├── services/                  # Business logic & external services
-│   └── geminiService.ts        # Google Gemini API integration
-│
-└── data/                      # Mock data & fixtures
-    └── mockData.ts            # Sample subjects, lessons, quiz attempts
-```
-
----
-
-## Type System
-
-The app uses TypeScript with strict type checking. Core types are defined in `types.ts`:
-
-### Core Interfaces
-
-```typescript
-Theme: 'light' | 'dark'
-View: 'home' | 'progress' | 'aiFriend' | 'settings'
-
-Subject {
-  id: string
-  name: string
-  icon: string                    // Emoji or SVG
-  color: string                   // Tailwind color class
-}
-
-Lesson {
-  id: string
-  subjectId: string
-  title: string
-  content: string                 // Long text content
-  contentType: ('text'|'video'|'image')[]
-  downloadStatus: number          // 0-100 (offline download progress)
-}
-
-Question {
-  id: string
-  lessonId: string
-  questionText: string
-  options: string[]
-  correctAnswerIndex: number
-}
-
-QuizAttempt {
-  id: string
-  lessonId: string
-  score: number
-  total: number
-  timestamp: string
-}
+abhyas_offline_learning/
+├── lib/
+│   ├── main.dart                  # App entry point
+│   ├── models/                    # Data models
+│   │   ├── subject.dart
+│   │   ├── lesson.dart
+│   │   ├── question.dart
+│   │   └── quiz_attempt.dart
+│   ├── services/                  # Business logic & API
+│   │   └── gemini_service.dart
+│   ├── utils/                     # Utilities & helpers
+│   │   ├── app_state.dart         # Global state management
+│   │   ├── theme.dart             # Theme configuration
+│   │   └── mock_data.dart         # Sample data
+│   ├── views/                     # Screen components
+│   │   ├── home_view.dart
+│   │   ├── lesson_list_view.dart
+│   │   ├── lesson_view.dart
+│   │   ├── quiz_view.dart
+│   │   ├── progress_view.dart
+│   │   ├── ai_friend_view.dart
+│   │   └── settings_view.dart
+│   └── widgets/                   # Reusable components
+│       ├── bottom_nav.dart
+│       └── subject_card.dart
+├── android/                       # Android-specific files
+├── ios/                          # iOS-specific files
+├── test/                         # Unit tests
+├── pubspec.yaml                  # Dependencies
+├── analysis_options.yaml         # Lint rules
+└── README.md                     # This file
 ```
 
 ---
@@ -129,9 +104,10 @@ QuizAttempt {
 
 ### Prerequisites
 
-- **Node.js** 14.0 or higher
-- **npm** 6.0 or higher
-- **Google Gemini API Key** (optional, for AI summarization features)
+- **Flutter SDK** 3.2.0 or higher ([Install Flutter](https://flutter.dev/docs/get-started/install))
+- **Dart SDK** 3.2.0 or higher (included with Flutter)
+- **Android Studio** / **Xcode** for running on simulators
+- **Google Gemini API Key** (optional, for AI features) - Get it from [Google AI Studio](https://aistudio.google.com/)
 
 ### Installation & Setup
 
@@ -139,41 +115,52 @@ QuizAttempt {
 
    ```bash
    git clone <repository-url>
-   cd abhyas
+   cd abhyas-offline-learning
    ```
 
 2. **Install dependencies**
 
    ```bash
-   npm install
+   flutter pub get
    ```
 
-3. **Configure API Key** (optional)
-   Create a `.env.local` file in the project root:
-
-   ```env
-   GEMINI_API_KEY=your_api_key_here
-   ```
-
-   Get your API key from [Google AI Studio](https://aistudio.google.com/)
-
-4. **Start development server**
+3. **Configure API Key** (optional for AI features)
+   
+   Create a `.env` file or configure the API key via command line:
 
    ```bash
-   npm run dev
+   # Option 1: Set environment variable
+   export GEMINI_API_KEY=your_api_key_here
+
+   # Option 2: Pass during run
+   flutter run --dart-define=GEMINI_API_KEY=your_api_key_here
    ```
 
-   The app runs on `http://localhost:3000`
+4. **Run the app**
+
+   ```bash
+   # Run on connected device/emulator
+   flutter run
+
+   # Run in release mode
+   flutter run --release
+
+   # Run on specific device
+   flutter devices
+   flutter run -d <device_id>
+   ```
 
 5. **Build for production**
 
    ```bash
-   npm run build
-   ```
+   # Build APK (Android)
+   flutter build apk --release
 
-6. **Preview production build**
-   ```bash
-   npm run preview
+   # Build App Bundle (Android)
+   flutter build appbundle --release
+
+   # Build IPA (iOS)
+   flutter build ios --release
    ```
 
 ---
@@ -182,38 +169,114 @@ QuizAttempt {
 
 ### State Management
 
-The app uses React's built-in `useState` and `useContext` for state management:
+The app uses **Provider** for state management:
 
-- **Global State** (`App.tsx`): Theme, current view, selected subject/lesson, quiz attempts
-- **Local State**: Component-level state for forms, animations, UI interactions
+- **Global State** (`AppState`): Subject/lesson selection, quiz attempts, theme, sync status
+- **Local State**: Component-level state for UI interactions and animations
+- **Reactive Updates**: UI automatically updates when state changes
 
 ### Navigation Flow
 
 ```
-Home → Select Subject → Select Lesson → Lesson View
-                                      ↓
-                            Summarize (AI) / Read Aloud
-                                      ↓
-                                  Start Quiz
-                                      ↓
-                              Quiz Results → Progress
+Home → Select Subject → Lesson List → Select Lesson → Lesson View
+                                                    ↓
+                                        Take Quiz → Quiz View → Results
+                                                    ↓
+                                        Progress View (shows all attempts)
 ```
 
 ### Component Hierarchy
 
 ```
-<App>
-  ├── <Header>
-  ├── {CurrentView}
-  │   ├── <HomeView>
-  │   ├── <LessonListView>
-  │   │   └── <LessonListItem> (repeated)
-  │   ├── <LessonView>
-  │   ├── <QuizView>
-  │   ├── <ProgressView>
-  │   ├── <AiFriendView>
-  │   └── <SettingsView>
-  └── <BottomNav>
+MaterialApp (Provider)
+└── MainScreen
+    ├── BottomNav (4 tabs)
+    └── Dynamic Body
+        ├── HomeView
+        ├── LessonListView
+        ├── LessonView
+        ├── QuizView
+        ├── ProgressView
+        ├── AiFriendView
+        └── SettingsView
+```
+
+---
+
+## Development
+
+### Running Tests
+
+```bash
+# Run all tests
+flutter test
+
+# Run tests with coverage
+flutter test --coverage
+```
+
+### Code Analysis
+
+```bash
+# Analyze code
+flutter analyze
+
+# Format code
+flutter format .
+```
+
+### Adding New Content
+
+#### 1. Add a New Lesson
+
+Edit `lib/utils/mock_data.dart`:
+
+```dart
+const Lesson(
+  id: 'new_lesson_id',
+  title: 'New Lesson Title',
+  subjectId: 'science', // or 'math', 'history', 'english'
+  content: '''Your lesson content here...''',
+  contentTypes: ['text', 'video', 'image'],
+  downloadStatus: 100,
+),
+```
+
+#### 2. Add Quiz Questions
+
+Add 10 questions per lesson in `mock_data.dart`:
+
+```dart
+const Question(
+  id: 'q_new_lesson_id_1',
+  lessonId: 'new_lesson_id',
+  questionText: 'What is...?',
+  options: ['Option A', 'Option B', 'Option C', 'Option D'],
+  correctAnswerIndex: 0, // 0-3 for A-D
+),
+```
+
+### Customizing Themes
+
+Edit `lib/utils/theme.dart` to modify colors and styles:
+
+```dart
+static const Color cyanAccent = Color(0xFF06B6D4);
+static const Color darkBackground = Color(0xFF0A0F1F);
+```
+
+---
+
+## Environment Variables
+
+| Variable         | Required | Purpose                        | Default |
+| ---------------- | -------- | ------------------------------ | ------- |
+| `GEMINI_API_KEY` | No       | Google Gemini API key for AI   | ''      |
+
+**Setting via command line:**
+
+```bash
+flutter run --dart-define=GEMINI_API_KEY=your_key_here
 ```
 
 ---
@@ -222,207 +285,113 @@ Home → Select Subject → Select Lesson → Lesson View
 
 ### Google Gemini API
 
-The app integrates with Google's Gemini API for AI-powered text summarization.
+**Service**: `lib/services/gemini_service.dart`
 
-**Service**: `services/geminiService.ts`
+#### Key Methods
 
-#### Key Functions
+**`summarizeText(String text): Future<String>`**
+- Generates student-friendly 5-10 sentence summaries
+- Uses temperature 0.7 for balanced creativity/accuracy
 
-**`summarizeText(text: string): Promise<string>`**
+**`getChatResponse(String message): Future<String>`**
+- Provides conversational AI assistance
+- Context-aware responses for students grades 6-12
 
-- Takes lesson content and returns a student-friendly 5-10 sentence summary
-- Uses `gemini-2.5-flash` model for fast, efficient summarization
-- Returns error message if API unavailable or request fails
-
-```typescript
-const summary = await summarizeText(lessonContent);
-```
-
-**`isGeminiAvailable(): boolean`**
-
-- Checks if Gemini API is configured and ready
-- Used to conditionally enable/disable summarization UI
-- Returns `true` if `GEMINI_API_KEY` is set, `false` otherwise
-
-```typescript
-if (isGeminiAvailable()) {
-  // Show "Summarize" button
-}
-```
-
-### Error Handling
-
-- Missing API key: Feature gracefully disabled with console warning
-- Network errors: User-friendly error message displayed
-- Rate limiting: Handled by Google GenAI SDK
+**`isAvailable(): bool`**
+- Checks if API key is configured
+- Returns `false` when offline/key missing
 
 ---
 
-## Configuration
+## Mock Data
 
-### Build Configuration (`vite.config.ts`)
+The app includes comprehensive sample data:
 
-```typescript
-// Development server runs on port 3000
-server: { port: 3000, host: '0.0.0.0' }
+- **4 Subjects**: Each with custom emoji icon and gradient colors
+- **20 Lessons**: 5 per subject with 500-1000 word content
+- **200+ Questions**: 10 questions per lesson
+- **5 Sample Quiz Attempts**: Pre-populated progress data
 
-// Environment variables exposed to app
-define: {
-  'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
-}
-
-// Path alias for imports
-resolve.alias: { '@': path.resolve(__dirname, '.') }
-```
-
-### TypeScript Configuration (`tsconfig.json`)
-
-- **Target**: ES2022
-- **Module**: ESNext
-- **JSX**: react-jsx (React 17+ automatic JSX runtime)
-- **Strict Mode**: Enabled for type safety
-- **Path Alias**: `@/*` resolves to project root
+All mock data is located in `lib/utils/mock_data.dart`.
 
 ---
 
-## Development
+## Building for Production
 
-### Adding a New Lesson
-
-1. Add data to `data/mockData.ts`:
-
-   ```typescript
-   const MOCK_LESSONS: Lesson[] = [
-     {
-       id: "lesson-1",
-       subjectId: "math",
-       title: "Algebra Basics",
-       content: "...",
-       contentType: ["text", "video"],
-       downloadStatus: 100,
-     },
-   ];
-   ```
-
-2. Reference in your view component using the type-safe `Lesson` interface
-
-### Adding a New Component
-
-1. Create component in `components/` or `components/icons/`
-2. Use TypeScript + React hooks
-3. Import and use in parent component
-
-Example:
-
-```typescript
-// components/NewFeature.tsx
-import React from "react";
-
-const NewFeature: React.FC = () => {
-  return <div>Feature</div>;
-};
-
-export default NewFeature;
-```
-
-### Adding a New View
-
-1. Create component in `views/`
-2. Add to `App.tsx` view enum and switch statement
-3. Wire up navigation in `BottomNav.tsx`
-
-### Running Tests
-
-Currently, no test suite is configured. To add testing:
+### Android
 
 ```bash
-npm install --save-dev vitest @testing-library/react @testing-library/jest-dom
+# Generate release APK
+flutter build apk --release
+
+# Generate App Bundle (preferred for Play Store)
+flutter build appbundle --release
+
+# Output location:
+# build/app/outputs/flutter-apk/app-release.apk
+# build/app/outputs/bundle/release/app-release.aab
 ```
 
-Then create `.test.tsx` files and run:
+### iOS
 
 ```bash
-npm run test
+# Build iOS release
+flutter build ios --release
+
+# Open in Xcode for signing and deployment
+open ios/Runner.xcworkspace
 ```
-
----
-
-## Environment Variables
-
-| Variable         | Required | Purpose                                      |
-| ---------------- | -------- | -------------------------------------------- |
-| `GEMINI_API_KEY` | No       | Google Gemini API key for text summarization |
-
-**.env.local** (Git-ignored, local only):
-
-```env
-GEMINI_API_KEY=sk-...
-```
-
----
-
-## Performance Considerations
-
-- **Code Splitting**: Vite automatically chunks routes for optimal loading
-- **Tree Shaking**: Unused code eliminated during build
-- **Lazy Loading**: Consider lazy-loading views as app grows
-- **Image Optimization**: Use lightweight formats for lesson images
-- **Caching**: Service workers can be added for offline support
-
----
-
-## Browser Support
-
-- Chrome 90+
-- Firefox 88+
-- Safari 14+
-- Edge 90+
 
 ---
 
 ## Common Issues & Troubleshooting
 
-| Issue                                    | Solution                                                                |
-| ---------------------------------------- | ----------------------------------------------------------------------- |
-| Port 3000 already in use                 | Change `vite.config.ts` server port or kill process                     |
-| API key not working                      | Verify key in `.env.local` and check API quotas in Google Cloud Console |
-| React components not rendering           | Clear browser cache, restart dev server                                 |
-| TypeScript errors                        | Run `npm run build` to check for errors                                 |
-| Hot Module Replacement (HMR) not working | Check Vite config and browser console for errors                        |
+| Issue                                  | Solution                                                      |
+| -------------------------------------- | ------------------------------------------------------------- |
+| Flutter not recognized                 | Add Flutter to PATH: `export PATH="$PATH:`pwd`/flutter/bin"` |
+| API key not working                    | Verify key in Gemini AI Studio and check network connection  |
+| Build errors on iOS                    | Run `pod install` in `ios/` directory                         |
+| Gradle sync fails (Android)            | Update Android Studio, check `local.properties`               |
+| Hot reload not working                 | Stop and restart with `flutter run`                           |
+| Permission errors (Android)            | Add `<uses-permission>` in AndroidManifest.xml                |
 
 ---
 
-## Security Best Practices
+## Performance Considerations
 
-1. **Never commit `.env.local`** — Add to `.gitignore`
-2. **API Keys in environment variables** — Never hardcode in source
-3. **Validate user input** — Sanitize quiz answers and lesson content
-4. **CORS**: Configure Vite to proxy API calls if needed
-5. **Content Security Policy**: Implement CSP headers for production
+- **Lazy Loading**: Questions loaded per lesson, not all at once
+- **Efficient Rendering**: Use const constructors where possible
+- **Image Optimization**: Consider cached_network_image for remote content
+- **State Management**: Provider minimizes unnecessary rebuilds
+- **API Calls**: Debounced and cached where appropriate
 
 ---
 
 ## Future Enhancements
 
-- [ ] Offline data persistence with IndexedDB
-- [ ] Service Worker for true offline support
+- [ ] Local database (SQLite/Hive) for persistence
+- [ ] Video player integration for lesson videos
+- [ ] Image viewer for lesson images
 - [ ] User authentication & cloud sync
-- [ ] Advanced analytics & learning metrics
-- [ ] Video lesson support with streaming
+- [ ] Push notifications for reminders
 - [ ] Multi-language support
-- [ ] Accessibility improvements (ARIA labels)
-- [ ] Dark mode toggle persistence
-- [ ] Push notifications for lesson reminders
-- [ ] Export/import user progress
+- [ ] Accessibility improvements (screen reader support)
+- [ ] Light theme option
+- [ ] Export progress as PDF
+- [ ] Social sharing of achievements
+- [ ] Gamification (badges, streaks, leaderboards)
 
 ---
 
 ## Contributing
 
-1. Create a new branch: `git checkout -b feature/my-feature`
-2. Make changes and commit: `git commit -m "Add new feature"`
-3. Push and open a Pull Request
-4. Ensure code is TypeScript-safe and follows project structure
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/my-feature`
+3. Make changes and commit: `git commit -m "Add new feature"`
+4. Push to branch: `git push origin feature/my-feature`
+5. Open a Pull Request
+
+**Code Style**: Follow [Effective Dart](https://dart.dev/guides/language/effective-dart) guidelines.
 
 ---
 
@@ -434,14 +403,24 @@ MIT License — feel free to use for personal or commercial projects.
 
 ## Support & Documentation
 
-- **React Docs**: https://react.dev
-- **Vite Docs**: https://vite.dev
-- **TypeScript Docs**: https://www.typescriptlang.org
-- **Google GenAI SDK**: https://www.npmjs.com/package/@google/genai
-- **Tailwind CSS**: https://tailwindcss.com (if used for styling)
+- **Flutter Docs**: https://flutter.dev/docs
+- **Dart Docs**: https://dart.dev/guides
+- **Provider Package**: https://pub.dev/packages/provider
+- **Google Gemini API**: https://ai.google.dev/docs
+- **Material Design**: https://material.io/design
 
 ---
 
-## Contact & Feedback
+## Contact
 
-For questions or suggestions, please open an issue or contact the development team.
+For questions, suggestions, or bug reports, please open an issue on GitHub.
+
+---
+
+## Acknowledgments
+
+- Flutter team for the amazing framework
+- Google for Gemini API
+- All contributors and testers
+
+**Happy Learning! 📚✨**
